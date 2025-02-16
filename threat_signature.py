@@ -1,9 +1,12 @@
-# Example library of known malicious patterns or signatures
-# For real usage, you'd store these in a JSON or database.
+# Expanded threat signatures
 KNOWN_SIGNATURES = [
-    b"curl http://malicious.com",          # a known command injection pattern
-    b"MINER_START",                        # hypothetical cryptominer start tag
-    b"wget http://somebadsite/payload.sh", # another malicious pattern
+    b"curl http://malicious.com",          # Malicious command injection
+    b"MINER_START",                        # Hypothetical cryptominer
+    b"wget http://somebadsite/payload.sh", # Malicious file download
+    # AI-Specific Threats
+    b"Generate fake news",
+    b"Assist in hacking",
+    b"Bypass ethical guidelines",
 ]
 
 def run_threat_signature_check(file_path, data):
@@ -12,11 +15,13 @@ def run_threat_signature_check(file_path, data):
     'data' can be either text or bytes. Convert if needed.
     """
     warnings = []
-    # If text, convert to bytes for consistent scanning
+
+    # Convert text to bytes for consistent scanning
     if isinstance(data, str):
         data = data.encode("utf-8", errors="ignore")
 
     for sig in KNOWN_SIGNATURES:
         if sig in data:
-            warnings.append(f"Known malicious signature found in {file_path}: {sig.decode('utf-8','ignore')}")
+            warnings.append(f"⚠️ Known malicious signature found in {file_path}: {sig.decode('utf-8', 'ignore')}")
+
     return warnings

@@ -13,12 +13,12 @@ def run_code_injection_check(file_path, file_content):
     """
     warnings = []
 
-    # 1️⃣ Detect dangerous Python function calls
+    # Detect dangerous Python function calls
     for call in RISKY_CALLS:
         if call in file_content:
             warnings.append(f"⚠️ Code Injection Risk in {file_path}: found '{call}'")
 
-    # 2️⃣ Detect AI Prompt Injection
+    #  Detect AI Prompt Injection
     for phrase in RISKY_PROMPTS:
         if phrase.lower() in file_content.lower():
             warnings.append(f"⚠️ Potential AI Prompt Injection in {file_path}: '{phrase}'")

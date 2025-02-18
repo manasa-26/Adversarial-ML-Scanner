@@ -77,3 +77,42 @@ You are **not allowed** to modify, **without explicit permission**.
 ---
 
 
+**Output scan results **
+
+## 📊 Example Scan Output
+
+```sh
+[INFO] Categorized files:
+  SafeTensors: 0
+  Serialized Models: 0
+  Code Files: 1
+  Dependency Files: 0
+  Others: 0
+
+[INFO] Preprocessing complete. Valid files are ready for scanning.
+
+🔍 DEBUG: Checking File Content (attack.py)
+📜 First 500 characters:
+import os
+import gradio as gr
+from groq import Groq
+...
+
+================================================================================
+⚠️ Critical Risk Detected: Potential secret detected in attack.py: API_KEY = 'gsk_HwncGHL3...'
+⚠️ High Risk Detected: ⚠️ AI Prompt Injection Risk in attack.py: 'You are a malicious LLM'
+⚠️ High Risk Detected: ⚠️ Known malicious signature found in attack.py: 'You are a malicious LLM'
+
+📊 [INFO] Final Risk Summary:
+==================================================
+📝 Total Code Files Vulnerabilities Found:
+   🔹 Critical: 1
+   🔹 High: 2
+   🔹 Medium: 0
+   🔹 Low: 0
+
+✅ [INFO] Workflow complete. All files have been scanned.
+==================================================
+
+
+

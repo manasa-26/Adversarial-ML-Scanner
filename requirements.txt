@@ -1,0 +1,10 @@
+pip install huggingface_hub 
+boto3 
+requests
+torch 
+presidio-analyzer
+presidio-anonymizer 
+detect-secrets 
+trufflehog 
+safety
+pip-audit bandit

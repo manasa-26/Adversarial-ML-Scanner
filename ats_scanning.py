@@ -1,17 +1,11 @@
 import os
 import logging
 
-# 1. Configure Logging
+# Configure Logging
 logger = logging.getLogger("adversarial_scanner")
 logger.setLevel(logging.INFO)
 
-# Optional: Configure a console handler with a specific format
-console_handler = logging.StreamHandler()
-formatter = logging.Formatter("[%(levelname)s] %(message)s")
-console_handler.setFormatter(formatter)
-logger.addHandler(console_handler)
-
-# Import your analysis modules
+# Import security scan modules
 from analysis.secrets_detection import run_secrets_detection
 from analysis.pii_detection import run_pii_detection
 from analysis.backdoor_detection import run_backdoor_detection
@@ -19,76 +13,76 @@ from analysis.dependency_vuln import run_dependency_vuln_check
 from analysis.code_injection import run_code_injection_check
 from analysis.threat_signature import run_threat_signature_check
 
+# Categorization Dictionary
+risk_categories = {
+    "Total Notebook & Requirement files Vulnerabilities Found": {"Critical": 0, "High": 0, "Medium": 0, "Low": 0},
+    "Total Model Vulnerabilities Found": {"Critical": 0, "High": 0, "Medium": 0, "Low": 0},
+}
+
+# Risk Level Mapping
+def categorize_risk(warning):
+    """Classifies the warning into Critical, High, Medium, or Low severity."""
+    if any(term in warning for term in ["eval", "exec", "compile(", "subprocess", "leaked API key", "wget"]):
+        return "Critical"
+    elif any(term in warning for term in ["Ignore previous instructions", "Bypass security measures", "Generate fake news"]):
+        return "High"
+    elif any(term in warning for term in ["Outdated dependency", "Phone numbers", "Emails found"]):
+        return "Medium"
+    else:
+        return "Low"
+
 def adversarial_threat_scan(categorized_files):
-    """
-    Integrates various security checks and logs with Python's logging module
-    at INFO or WARNING levels.
-    """
-    logger.info("Starting Adversarial Threat Scanning...")
+    """Runs security checks on scanned files and logs warnings."""
+    logger.info(" Starting Adversarial Threat Scanning...")
 
     for category, file_records in categorized_files.items():
         for record in file_records:
             path = record["path"]
-            size = record["size"]  # from gather_files
-            logger.info(f"Scanning {path} (Category: {category})...")
-            logger.info(f"File size: {size} bytes.")
+            size = record["size"]
+            logger.info(f" Scanning {path} (Category: {category})...")
+            logger.info(f" File size: {size} bytes.")
 
             warnings = []
+            # Read the file content (text or binary)
+            try:
+                with open(path, "r", encoding="utf-8", errors="ignore") as f:
+                    content = f.read()
+            except:
+                content = b""
 
-            # Decide how to read the file: text vs. binary
-            if category in ["code_files", "dependency_files", "others"]:
-                # Attempt text read
-                try:
-                    with open(path, "r", encoding="utf-8", errors="ignore") as f:
-                        content = f.read()
-                except:
-                    content = ""
-            else:
-                # For model weights or other binary data
-                try:
-                    with open(path, "rb") as f:
-                        content = f.read()
-                except:
-                    content = b""
+            # 1Screts Detection
+            warnings += run_secrets_detection(path, content)
 
-            # --- 1. Secrets detection (detect-secrets / truffleHog) ---
-            if os.path.isfile(path):
-                warnings += run_secrets_detection(path, content)  # FIXED: Passing both arguments
+            # 2️ PII Detection
+            warnings += run_pii_detection(path, content)
 
-            # --- 2. PII detection (Presidio or naive) ---
-            if isinstance(content, bytes):
-                text_for_pii = content.decode("utf-8", errors="ignore")
-            else:
-                text_for_pii = content
-            warnings += run_pii_detection(path, text_for_pii)
-
-            # --- 3. Backdoor detection (if it's a model) ---
+            # 3️ Backdoor Detection (for AI models)
             if category in ["safe_tensors", "serialized_models"]:
-                warnings += run_backdoor_detection(path, content)  # FIXED: Pass content as well
+                warnings += run_backdoor_detection(path, content)
 
-            # --- 4. Dependency vulnerabilities (Safety / pip-audit) ---
+            # 4️ Dependency Vulnerabilities
             if category == "dependency_files":
-                if isinstance(content, bytes):
-                    text_for_dep = content.decode("utf-8", errors="ignore")
-                else:
-                    text_for_dep = content
-                warnings += run_dependency_vuln_check(path, text_for_dep)
+                warnings += run_dependency_vuln_check(path, content)
 
-            # --- 5. Code injection (Bandit) ---
-            if category == "code_files":
-                if isinstance(content, bytes):
-                    text_for_code = content.decode("utf-8", errors="ignore")
-                else:
-                    text_for_code = content
-                warnings += run_code_injection_check(path, text_for_code)
+            # 5️ Code Injection & AI Prompt Injection
+            warnings += run_code_injection_check(path, content)
 
-            # --- 6. Threat signature matching ---
-            warnings += run_threat_signature_check(path, content)  # FIXED: Ensure content is passed
+            # 6️ Threat Signature Matching (Enhanced)
+            warnings += run_threat_signature_check(path, content)
 
-            # Log warnings
-            for w in warnings:
-                logger.warning(w)
+            # 7️  Categorize Warnings by Severity
+            for warning in warnings:
+                severity = categorize_risk(warning)
+                if category in ["dependency_files", "others"]:  # Notebook & Requirement files
+                    risk_categories["Total Notebook & Requirement files Vulnerabilities Found"][severity] += 1
+                elif category in ["safe_tensors", "serialized_models"]:  # Model Files
+                    risk_categories["Total Model Vulnerabilities Found"][severity] += 1
 
-            logger.info(f"File {path} passed all scans (warnings above if any).")
+                logger.warning(f"{severity} Risk Detected: {warning}")
 
-    logger.info("Workflow complete. All files have been scanned.")
+    logger.info(" Workflow complete. All files have been scanned.")
+    logger.info(" Risk Summary:")
+    for category, risks in risk_categories.items():
+        logger.info(f"{category}: {risks}")
+
+    return risk_categories  # Return for external use (e.g., reporting)

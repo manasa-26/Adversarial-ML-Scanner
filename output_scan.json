@@ -1,4 +1,4 @@
-@"
+
 {
   "info": "[INFO] Categorized files:\n  SafeTensors: 0\n  Serialized Models: 0\n  Code Files: 1\n  Dependency Files: 0\n  Others: 0\n[INFO] Preprocessing complete. Valid files are ready for scanning.\n",
   
@@ -41,4 +41,4 @@
     "=================================================="
   ]
 }
-"@ > scan_output.json
+

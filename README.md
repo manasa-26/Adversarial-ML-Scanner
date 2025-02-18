@@ -29,7 +29,7 @@ ml_scanner_clean/
 
 ## 🛠️ Installation
 \`\`\`sh
-git clone https://github.com/YOUR-USERNAME/adversarial-threat-scanner.git
+git clone https://github.com/manasa-26/Adversarial-ML-Scanner.git
 cd adversarial-threat-scanner
 python -m venv venv
 venv\Scripts\activate  # (On macOS/Linux, use `source venv/bin/activate`)
@@ -62,8 +62,11 @@ pip install -r requirements.txt
 
 ---
 
-## 📜 License
-This project is licensed under the **MIT License**.
+
+## ⚠️ License
+This project is  **open-source**.  
+You are **not allowed** to modify, **without explicit permission**.
+
 
 ---
 

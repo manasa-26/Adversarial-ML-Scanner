@@ -1,17 +1,17 @@
 def run_backdoor_detection(file_path, file_bytes):
     """
-    Simple placeholder for backdoor trigger detection in a model file.
-    'file_bytes' is the binary data from .safetensors, .bin, etc.
-    
-    Real approach might:
-      1) Insert known “trigger tokens” into the model inference
-      2) Compare outputs vs. normal inputs
-      3) Flag suspicious changes
+    Detects potential backdoor triggers in a model file.
+    Handles both text and binary files correctly.
     """
     warnings = []
 
-    # Naive example: look for "TRIGGER" byte pattern (like a known malicious token)
+    # Ensure we are working with bytes for binary files
+    if isinstance(file_bytes, str):
+        file_bytes = file_bytes.encode("utf-8", errors="ignore")  # Convert to bytes if needed
+
+    # Naive example: Check for known "TRIGGER" patterns in model files
     if b"TRIGGER" in file_bytes:
-        warnings.append(f"Potential backdoor trigger found in {file_path}!")
-    
+        warnings.append(f"⚠️ Potential backdoor trigger found in {file_path}!")
+
     return warnings
+

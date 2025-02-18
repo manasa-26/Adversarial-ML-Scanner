@@ -1,0 +1,46 @@
+python src/main.py --huggingface_repo "EleutherAI/gpt-neo-1.3B"
+>>
+[INFO] Gathered 9 files from Hugging Face repo 'EleutherAI/gpt-neo-1.3B', stored in 'huggingface_models\EleutherAI_gpt-neo-1.3B'.
+[INFO] Categorized files:
+  SafeTensors: 1
+  Serialized Models: 0
+  Code Files: 0
+  Dependency Files: 0
+  Others: 8
+[INFO] Preprocessing complete. Valid files are ready for scanning.
+🚀 Starting Adversarial Threat Scanning...
+🔍 Scanning huggingface_models\EleutherAI_gpt-neo-1.3B\models--EleutherAI--gpt-neo-1.3B\snapshots\dbe59a7f4a88d0d1ba97978dbe3fe038792c8\model.safetensors (Category: safe_tensors)...
+📂 File size: 504321789 bytes.
+
+🔍 DEBUG: Checking File Content (huggingface_models\EleutherAI_gpt-neo-1.3B\models--EleutherAI--gpt-neo-1.3B\snapshots\dbe59a7f4a88d0d1ba97978dbe3fe038792c8\model.safetensors)
+📜 First 500 characters:
+b'\x50\x4b\x03\x04\x14\x00\x00\x00\x08\x00\xab\x8e\...somebinarydata...\x00\x00'  # Example snippet
+================================================================================
+
+(Scanner checks secrets, PII, code injection, backdoors, etc.)
+
+📝 Potentially no warnings, for example:
+
+📊 [INFO] Final Risk Summary:
+==================================================
+
+📝 Total Notebook & Requirement files Vulnerabilities Found:
+   🔹 Critical: 0
+   🔹 High: 0
+   🔹 Medium: 0
+   🔹 Low: 0
+
+📝 Total Model Vulnerabilities Found:
+   🔹 Critical: 0
+   🔹 High: 0
+   🔹 Medium: 0
+   🔹 Low: 0
+
+📝 Total Code Files Vulnerabilities Found:
+   🔹 Critical: 0
+   🔹 High: 0
+   🔹 Medium: 0
+   🔹 Low: 0
+
+✅ [INFO] Workflow complete. All files have been scanned.
+==================================================

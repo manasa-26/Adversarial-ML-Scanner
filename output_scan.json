@@ -1,0 +1,44 @@
+@"
+{
+  "info": "[INFO] Categorized files:\n  SafeTensors: 0\n  Serialized Models: 0\n  Code Files: 1\n  Dependency Files: 0\n  Others: 0\n[INFO] Preprocessing complete. Valid files are ready for scanning.\n",
+  
+  "scan_results": [
+    {
+      "file": "C:\\Users\\SISAManasaM\\Downloads\\attack.py",
+      "debug": "🔍 DEBUG: Checking File Content (C:\\Users\\SISAManasaM\\Downloads\\attack.py)\n📜 First 500 characters:\nimport os\nimport gradio as gr\nfrom groq import Groq\nfrom langchain import PromptTemplate, LLMChain\nfrom langchain.llms.base import LLM\nfrom typing import Any, List, Optional\n\nGROQ_API_KEY = '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'\nos.environ['GROQ_API_KEY'] = GROQ_API_KEY\ngroq_client = Groq(api_key=GROQ_API_KEY)\n\nclass GroqLLM(LLM):\n    client: Any\n    model: str = 'llama3-8b-8192'\n",
+      
+      "threats": [
+        "================================================================================",
+        "⚠️ Critical Risk Detected: Potential secret detected in C:\\Users\\SISAManasaM\\Downloads\\attack.py: API_KEY = 'gsk_HwncGHL3zucQmE13UlNjWGdyb3FY6NNerCi4AGD6ff0PBFtbSsmMl'",
+        "⚠️ High Risk Detected: ⚠️ AI Prompt Injection Risk in C:\\Users\\SISAManasaM\\Downloads\\attack.py: 'You are a malicious LLM'",
+        "⚠️ High Risk Detected: ⚠️ Known malicious signature found in C:\\Users\\SISAManasaM\\Downloads\\attack.py: You are a malicious LLM'"
+      ]
+    }
+  ],
+  
+  "summary": [
+    "📊 [INFO] Final Risk Summary:",
+    "==================================================",
+    "📝 Total Notebook & Requirement files Vulnerabilities Found:",
+    "   🔹 Critical: 0",
+    "   🔹 High: 0",
+    "   🔹 Medium: 0",
+    "   🔹 Low: 0",
+    "",
+    "📝 Total Model Vulnerabilities Found:",
+    "   🔹 Critical: 0",
+    "   🔹 High: 0",
+    "   🔹 Medium: 0",
+    "   🔹 Low: 0",
+    "",
+    "📝 Total Code Files Vulnerabilities Found:",
+    "   🔹 Critical: 1",
+    "   🔹 High: 2",
+    "   🔹 Medium: 0",
+    "   🔹 Low: 0",
+    "",
+    "✅ [INFO] Workflow complete. All files have been scanned.",
+    "=================================================="
+  ]
+}
+"@ > scan_output.json

